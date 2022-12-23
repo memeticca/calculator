@@ -10,12 +10,12 @@
 </head>
 
 <body>
-    <script src="script.js" async defer></script>
+    <script src="main.js" async defer></script>
     <main>
         <div class="calculator">
             <div class="screen">
-                <p class="last-operation"></p>
-                <p class="current-operation">0</p>
+                <div id="last-operation" class="last-operation"></div>
+                <div id="current-operation" class="current-operation">0</div>
             </div>
             <div class="buttons-container">
                 <div class="header">
@@ -24,25 +24,25 @@
                 </div>
                 <div class="operators-container">
                     <div class="left-section">
-                        <button>7</button>
-                        <button>8</button>
-                        <button>9</button>
-                        <button>4</button>
-                        <button>5</button>
-                        <button>6</button>
-                        <button>1</button>
-                        <button>2</button>
-                        <button>3</button>
-                        <button>0</button>
-                        <button id="dot">.</button>
-                        <button>+/-</button>
+                        <button id="number">7</button>
+                        <button id="number">8</button>
+                        <button id="number">9</button>
+                        <button id="number">4</button>
+                        <button id="number">5</button>
+                        <button id="number">6</button>
+                        <button id="number">1</button>
+                        <button id="number">2</button>
+                        <button id="number">3</button>
+                        <button id="number">0</button>
+                        <button id="decimal">.</button>
+                        <button id="change-sign">+/-</button>
                     </div>
                     <div class="right-section">
-                        <button>%</button>
-                        <button>x</button>
-                        <button>÷</button>
-                        <button>+</button>
-                        <button>-</button>
+                        <button id="operator">%</button>
+                        <button id="operator">×</button>
+                        <button id="operator">÷</button>
+                        <button id="operator">+</button>
+                        <button id="operator">-</button>
                         <button id="equals">=</button>
                     </div>
                 </div>

@@ -41,8 +41,10 @@ button:hover {
 }
 
 .screen {
+    width: 330px;
     margin-bottom: 20px;
     padding: 0 5px;
+    overflow-wrap: break-word;
     text-align: right;
     font-family: 'Digital7', sans-serif;
     background-color: rgb(98, 155, 134);
