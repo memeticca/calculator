@@ -1,54 +1,52 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Calculator</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="style.css">
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body>
+  <body>
     <script src="main.js" async defer></script>
     <main>
-        <div class="calculator">
-            <div class="screen">
-                <div id="last-operation" class="last-operation"></div>
-                <div id="current-operation" class="current-operation">0</div>
-            </div>
-            <div class="buttons-container">
-                <div class="header">
-                    <button id="delete">DEL</button>
-                    <button id="clear">CLEAR</button>
-                </div>
-                <div class="operators-container">
-                    <div class="left-section">
-                        <button id="number">7</button>
-                        <button id="number">8</button>
-                        <button id="number">9</button>
-                        <button id="number">4</button>
-                        <button id="number">5</button>
-                        <button id="number">6</button>
-                        <button id="number">1</button>
-                        <button id="number">2</button>
-                        <button id="number">3</button>
-                        <button id="number">0</button>
-                        <button id="decimal">.</button>
-                        <button id="change-sign">+/-</button>
-                    </div>
-                    <div class="right-section">
-                        <button id="operator">%</button>
-                        <button id="operator">×</button>
-                        <button id="operator">÷</button>
-                        <button id="operator">+</button>
-                        <button id="operator">-</button>
-                        <button id="equals">=</button>
-                    </div>
-                </div>
-            </div>
+      <div class="calculator">
+        <div class="screen">
+          <div id="last-operation" class="last-operation"></div>
+          <div id="current-operation" class="current-operation">0</div>
         </div>
+        <div class="buttons-container">
+          <div class="header">
+            <button onclick="deleteNumber()">DEL</button>
+            <button onclick="clearScreen()">CLEAR</button>
+          </div>
+          <div class="operators-container">
+            <div class="left-section">
+              <button id="number">7</button>
+              <button id="number">8</button>
+              <button id="number">9</button>
+              <button id="number">4</button>
+              <button id="number">5</button>
+              <button id="number">6</button>
+              <button id="number">1</button>
+              <button id="number">2</button>
+              <button id="number">3</button>
+              <button id="number">0</button>
+              <button onclick="changeToDecimal()">.</button>
+              <button onclick="changeSign()">+/-</button>
+            </div>
+            <div class="right-section">
+              <button id="operator">%</button>
+              <button id="operator">×</button>
+              <button id="operator">÷</button>
+              <button id="operator">+</button>
+              <button id="operator">-</button>
+              <button onclick="operate()">=</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
-</body>
-
+  </body>
 </html>

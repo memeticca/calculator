@@ -1,90 +1,88 @@
 let currentOperation = document.getElementById("current-operation");
 let lastOperation = document.getElementById("last-operation");
-let numberSize = currentOperation.clientWidth;
-let hasOperator = false;
+
 let currentOperator;
-
-function appendNumber() {
-    currentOperation.innerText = (currentOperation.innerText == "0") ? this.innerText : currentOperation.innerText + this.innerText
-}
-
-function operate() {
-    if (!hasOperator) {
-        currentOperation.innerText += this.innerHTML;
-        lastOperation.innerText = currentOperation.innerText;
-        currentOperation.innerText = "0";
-
-        hasOperator = true
-        currentOperator = operatorsList[this.innerHTML];
-    } else {
-        let number = lastOperation.innerText.slice(0, lastOperation.innerText.length - 1);
-        let operationResult = currentOperator(Number(number), Number(currentOperation.innerText));
-        currentOperation.innerText = operationResult;
-        lastOperation.innerText = "";
-
-        hasOperator = false
-        currentOperator = undefined;
-    }
-}
-
-function changeSign() {
-    let number = Number(currentOperation.innerHTML);
-    currentOperation.innerText = -number;
-}
-
-function changeToDecimal() {
-    if (currentOperation.innerText.search(/\./) == -1) {
-        currentOperation.innerText += ".";
-    }
-}
-
-function clearScreen() {
-    currentOperation.innerText = "0";
-    lastOperation.innerText = "";
-    hasOperator = false
-    currentOperator = undefined
-}
-
-function deleteNumber() {
-    let text = currentOperation.innerText;
-    currentOperation.innerText = (text.length <= 1) ? 0 : text.slice(0, -1);
-}
-
-const addition = (a, b) => a + b;
-const subtraction = (a, b) => a - b;
-const multiplication = (a, b) => a * b;
-const division = (a, b) => a / b;
-const modulo = (a, b) => a % b;
+let hasOperator = false;
 
 let operatorsList = {
-    "+": addition,
-    "-": subtraction,
-    "×": multiplication,
-    "÷": division,
-    "%": modulo,
+  "+": (a, b) => a + b,
+  "-": (a, b) => a - b,
+  "×": (a, b) => a * b,
+  "÷": (a, b) => a / b,
+  "%": (a, b) => a % b,
 };
 
 let numberButton = document.querySelectorAll("#number");
-numberButton.forEach(button => {
-    button.addEventListener("click", appendNumber);
-})
+numberButton.forEach((button) => {
+  button.addEventListener("click", appendNumber);
+});
 
 let operatorsButton = document.querySelectorAll("#operator");
-operatorsButton.forEach(button => {
-    button.addEventListener("click", operate);
-})
+operatorsButton.forEach((button) => {
+  button.addEventListener("click", appendOperator);
+});
 
-let equalsButton = document.getElementById("equals");
-equals.addEventListener("click", operate);
+function appendNumber() {
+  currentOperation.innerText =
+    currentOperation.innerText === "0"
+      ? this.innerText
+      : currentOperation.innerText + this.innerText;
+}
 
-let signButton = document.getElementById("change-sign");
-signButton.addEventListener("click", changeSign);
+function appendOperator() {
+  if (!hasOperator) {
+    currentOperation.innerText += this.innerText;
+    lastOperation.innerText = currentOperation.innerText;
+    currentOperation.innerText = "0";
+    currentOperator = this.innerText;
+    hasOperator = true;
+  } else {
+    lastOperation.innerText = lastOperation.innerText.replace(
+      currentOperator,
+      this.innerText
+    );
+    currentOperator = this.innerText;
+  }
+}
 
-let decimalButton = document.getElementById("decimal");
-decimalButton.addEventListener("click", changeToDecimal);
+function operate() {
+  if (!hasOperator) {
+    return;
+  }
+  let number = lastOperation.innerText.slice(
+    0,
+    lastOperation.innerText.length - 1
+  );
+  let operationResult = operatorsList[currentOperator](
+    Number(number),
+    Number(currentOperation.innerText)
+  );
+  currentOperation.innerText = operationResult;
+  lastOperation.innerText = "";
 
-let clearButton = document.getElementById("clear");
-clearButton.addEventListener("click", clearScreen);
+  currentOperator = undefined;
+  hasOperator = !hasOperator;
+}
 
-let deleteButton = document.getElementById("delete");
-deleteButton.addEventListener("click", deleteNumber);
+function changeSign() {
+  let number = Number(currentOperation.innerHTML);
+  currentOperation.innerText = -number;
+}
+
+function changeToDecimal() {
+  if (currentOperation.innerText.search(/\./) == -1) {
+    currentOperation.innerText += ".";
+  }
+}
+
+function clearScreen() {
+  currentOperation.innerText = "0";
+  lastOperation.innerText = "";
+  hasOperator = false;
+  currentOperator = undefined;
+}
+
+function deleteNumber() {
+  let text = currentOperation.innerText;
+  currentOperation.innerText = text.length <= 1 ? 0 : text.slice(0, -1);
+}

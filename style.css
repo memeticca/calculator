@@ -1,83 +1,83 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap");
 
 @font-face {
-    font-family: Digital7;
-    src: url(fonts/Digital7.ttf);
+  font-family: Digital7;
+  src: url(fonts/Digital7.ttf);
 }
 
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 main {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 button {
-    font-family: 'Roboto', sans-serif;
-    font-size: 50px;
-    color: white;
-    background-color: grey;
-    border: 0;
-    border-radius: 5px;
-    transition: all .3s;
+  font-family: "Roboto", sans-serif;
+  font-size: 50px;
+  color: white;
+  background-color: grey;
+  border: 0;
+  border-radius: 5px;
+  transition: all 0.3s;
 }
 
 button:hover {
-    opacity: 80%;
+  opacity: 80%;
 }
 
 .calculator {
-    margin-top: 5%;
-    padding: 20px;
-    background-color: #2e2e2e;
-    border: 1px solid black;
-    border-radius: 5px;
-    box-shadow: .1px .1px 20px black;
+  margin-top: 5%;
+  padding: 20px;
+  background-color: #2e2e2e;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 0.1px 0.1px 20px black;
 }
 
 .screen {
-    width: 330px;
-    margin-bottom: 20px;
-    padding: 0 5px;
-    overflow-wrap: break-word;
-    text-align: right;
-    font-family: 'Digital7', sans-serif;
-    background-color: rgb(98, 155, 134);
+  width: 330px;
+  margin-bottom: 20px;
+  padding: 0 5px;
+  overflow-wrap: break-word;
+  text-align: right;
+  font-family: "Digital7", sans-serif;
+  background-color: rgb(98, 155, 134);
 }
 
 .last-operation {
-    font-size: 40px;
+  font-size: 40px;
 }
 
 .current-operation {
-    font-size: 80px;
+  font-size: 80px;
 }
 
 .buttons-container {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .operators-container {
-    display: flex;
-    gap: 8px;
+  display: flex;
+  gap: 8px;
 }
 
 .header {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 5px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
 }
 
 .left-section,
 .right-section {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
 }
