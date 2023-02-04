@@ -1,7 +1,7 @@
 # Calculator
-A calculator implementation using HTML, CSS and JS
+Calculator implemented in Vanilla JS
 
 [Preview here](https://memeticca.github.io/calculator/)
 
 ---
-This project was made during [The Odin Project](https://www.theodinproject.com/) course
+This project was originally made for [The Odin Project](https://www.theodinproject.com/) course
