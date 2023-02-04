@@ -1,88 +1,169 @@
-let currentOperation = document.getElementById("current-operation");
-let lastOperation = document.getElementById("last-operation");
+const calculator = {
+  operand1: 0,
+  operand2: 0,
+  operator: undefined,
+  decimalMode: false,
+  mathOperations: {
+    "+": (a, b) => a + b,
+    "-": (a, b) => a - b,
+    "×": (a, b) => a * b,
+    "÷": (a, b) => a / b,
+    "%": (a, b) => a % b,
+  },
 
-let currentOperator;
-let hasOperator = false;
-
-let operatorsList = {
-  "+": (a, b) => a + b,
-  "-": (a, b) => a - b,
-  "×": (a, b) => a * b,
-  "÷": (a, b) => a / b,
-  "%": (a, b) => a % b,
+  getActiveOperand: () => (calculator.operator ? "operand2" : "operand1"),
+  setActiveOperand: (value) => {
+    const activeOperand = calculator.getActiveOperand();
+    calculator[activeOperand] = value;
+  },
+  isDecimal: (value) => {
+    if (typeof value === "number" && !Number.isInteger(value)) {
+      return true;
+    }
+    return false;
+  },
+  changeToScientific: (number, maxSize) =>
+    Number(number.toFixed(maxSize / 2)).toExponential(),
+  toDefault: () => {
+    calculator.operand1 = 0;
+    calculator.operand2 = 0;
+    calculator.decimalMode = false;
+    calculator.operator = undefined;
+  },
 };
 
-let numberButton = document.querySelectorAll("#number");
-numberButton.forEach((button) => {
+const DOMCalculator = {
+  currentOperation: document.querySelector(".current-operation"),
+  pastOperation: document.querySelector(".past-operation"),
+  screen: document.querySelector(".screen"),
+
+  drawCurrentOperation: (text) => {
+    DOMCalculator.currentOperation.innerText = text;
+  },
+  drawPastOperation: (text) => {
+    DOMCalculator.pastOperation.innerText = text;
+  },
+  toDefault: () => {
+    DOMCalculator.drawCurrentOperation("0");
+    DOMCalculator.drawPastOperation("");
+  },
+};
+
+// Get the maximum amount of numbers that can go on the screen
+let { width: screenSize } = window.getComputedStyle(DOMCalculator.screen);
+let { fontSize } = window.getComputedStyle(DOMCalculator.currentOperation);
+fontSize = parseInt(fontSize.match(/\d+/).join(""), 10);
+screenSize = parseInt(screenSize.match(/\d+/).join(""), 10);
+const maxNumberSize = Math.floor((screenSize / fontSize) * 2);
+
+const numbers = document.querySelectorAll("#number");
+numbers.forEach((button) => {
   button.addEventListener("click", appendNumber);
 });
 
-let operatorsButton = document.querySelectorAll("#operator");
-operatorsButton.forEach((button) => {
+const operators = document.querySelectorAll("#operator");
+operators.forEach((button) => {
   button.addEventListener("click", appendOperator);
 });
 
 function appendNumber() {
-  currentOperation.innerText =
-    currentOperation.innerText === "0"
-      ? this.innerText
-      : currentOperation.innerText + this.innerText;
+  const activeOperand = calculator.getActiveOperand();
+  const operandValue = calculator[activeOperand];
+
+  if (`${operandValue}`.length === maxNumberSize) {
+    return;
+  }
+
+  if (!calculator.decimalMode) {
+    calculator.setActiveOperand(Number(`${operandValue}${this.innerText}`));
+  } else {
+    calculator.setActiveOperand(Number(`${operandValue}.${this.innerText}`));
+    calculator.decimalMode = false;
+  }
+
+  DOMCalculator.drawCurrentOperation(calculator[activeOperand]);
 }
 
 function appendOperator() {
-  if (!hasOperator) {
-    currentOperation.innerText += this.innerText;
-    lastOperation.innerText = currentOperation.innerText;
-    currentOperation.innerText = "0";
-    currentOperator = this.innerText;
-    hasOperator = true;
-  } else {
-    lastOperation.innerText = lastOperation.innerText.replace(
-      currentOperator,
-      this.innerText
+  if (calculator.operator) {
+    DOMCalculator.drawPastOperation(
+      DOMCalculator.pastOperation.innerText.replace(
+        calculator.operator,
+        this.innerText
+      )
     );
-    currentOperator = this.innerText;
+    calculator.operator = this.innerText;
+    return;
   }
+
+  calculator.decimalMode = false;
+  calculator.operator = this.innerText;
+  let operandValue;
+  if (`${calculator.operand1}`.length > maxNumberSize) {
+    operandValue = calculator.changeToScientific(
+      calculator.operand1,
+      maxNumberSize
+    );
+  } else {
+    operandValue = calculator.operand1;
+  }
+
+  DOMCalculator.drawPastOperation(`${operandValue}${calculator.operator}`);
 }
 
 function operate() {
-  if (!hasOperator) {
+  if (!calculator.operator) {
     return;
   }
-  let number = lastOperation.innerText.slice(
-    0,
-    lastOperation.innerText.length - 1
-  );
-  let operationResult = operatorsList[currentOperator](
-    Number(number),
-    Number(currentOperation.innerText)
-  );
-  currentOperation.innerText = operationResult;
-  lastOperation.innerText = "";
 
-  currentOperator = undefined;
-  hasOperator = !hasOperator;
+  const operationResult = calculator.mathOperations[calculator.operator](
+    calculator.operand1,
+    calculator.operand2
+  );
+
+  DOMCalculator.toDefault();
+  if (`${operationResult}`.length > maxNumberSize) {
+    DOMCalculator.drawCurrentOperation(
+      calculator.changeToScientific(operationResult, maxNumberSize)
+    );
+  } else {
+    DOMCalculator.drawCurrentOperation(operationResult);
+  }
+
+  calculator.toDefault();
+  calculator.operand1 = operationResult;
 }
 
 function changeSign() {
-  let number = Number(currentOperation.innerHTML);
-  currentOperation.innerText = -number;
+  const activeOperand = calculator.getActiveOperand();
+  const operandValue = calculator[activeOperand];
+  calculator.setActiveOperand(-operandValue);
+  DOMCalculator.drawCurrentOperation(calculator[activeOperand]);
 }
 
 function changeToDecimal() {
-  if (currentOperation.innerText.search(/\./) == -1) {
-    currentOperation.innerText += ".";
+  const activeOperand = calculator.getActiveOperand();
+  const operandValue = calculator[activeOperand];
+
+  if (!calculator.isDecimal(operandValue) && !calculator.decimalMode) {
+    DOMCalculator.drawCurrentOperation(`${operandValue}.`);
+    calculator.decimalMode = true;
   }
 }
 
-function clearScreen() {
-  currentOperation.innerText = "0";
-  lastOperation.innerText = "";
-  hasOperator = false;
-  currentOperator = undefined;
+function deleteNumber() {
+  const activeOperand = calculator.getActiveOperand();
+  const operandValue = calculator[activeOperand];
+  const changedValue =
+    `${Math.abs(operandValue)}`.length <= 1
+      ? 0
+      : Number(`${operandValue}`.slice(0, -1));
+
+  calculator.setActiveOperand(changedValue);
+  DOMCalculator.drawCurrentOperation(calculator[activeOperand]);
 }
 
-function deleteNumber() {
-  let text = currentOperation.innerText;
-  currentOperation.innerText = text.length <= 1 ? 0 : text.slice(0, -1);
+function clearScreen() {
+  DOMCalculator.toDefault();
+  calculator.toDefault();
 }

@@ -12,6 +12,7 @@
 }
 
 main {
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,7 +33,6 @@ button:hover {
 }
 
 .calculator {
-  margin-top: 5%;
   padding: 20px;
   background-color: #2e2e2e;
   border: 1px solid black;
@@ -50,7 +50,7 @@ button:hover {
   background-color: rgb(98, 155, 134);
 }
 
-.last-operation {
+.past-operation {
   font-size: 40px;
 }
 
